@@ -184,7 +184,22 @@ it("Responds with 'Hello, World!' object", function(done) {
 
 ---
 
-Lots more examples:
+Testing responses with a custom validator function:
+
+```javascript
+supertest("/nav")
+    .expect(200)
+    .expect(function(res) {
+        assert(res.body.prev, "Expected prev link");
+        assert(res.body.next, "Expected next link");
+    })
+    .end(done);
+
+```
+
+---
+
+Lots more validation examples:
 
 https://github.com/visionmedia/supertest#api
 
