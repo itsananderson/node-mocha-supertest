@@ -208,9 +208,14 @@ https://github.com/visionmedia/supertest#api
 Testing external APIs
 
 ```javascript
-var supertest = require("supertest")("http://google.com/");
+var supertest = require("supertest")("http://www.google.com/");
 
-supertest.get("/foo") // Sends a request to http://google.com/foo
+// http://google.com/foo
+supertest.get("/foo")
+    .end();
+
+// http://google.com/search?q=test
+supertest.get("/search?q=test")
     .end();
 ```
 
@@ -236,6 +241,8 @@ Other examples
 supertest
     .post("/foo")
     .set("Content-Type", "application/json")
-    .send({message: "Hello, Server!")
+    .send({
+        message: "Hello, Server!"
+    })
     .end();
 ```
