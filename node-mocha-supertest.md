@@ -143,7 +143,7 @@ var supertest = require("supertest")(app);
 it("Responds with 'Hello, World!'", function(done) {
     supertest("/")
         .expect(200)
-        .expect("Hello, World")
+        .expect("Hello, World!")
         .end(done);
 });
 ```
