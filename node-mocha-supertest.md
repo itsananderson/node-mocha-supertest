@@ -74,7 +74,7 @@ Advanced Mocha components:
 
 A note on async code:
 
-```
+```javascript
 it('can do async work', function(done) {
     setTimeout(function() {
         done();
@@ -86,7 +86,7 @@ it('can do async work', function(done) {
 
 More advanced example:
 
-```
+```javascript
 var app = require("../");
 
 describe("Advanced module", function() {
@@ -118,7 +118,7 @@ Supertest
 
 Before supertest
 
-```
+```javascript
 var app = reqiure("../");
 var request = require("request");
 var assert = require("assert");
@@ -136,7 +136,7 @@ it("Responds with 'Hello, World!'", function(done) {
 
 After supertest:
 
-```
+```javascript
 var app = require("../");
 var supertest = require("supertest")(app);
 
@@ -152,7 +152,7 @@ it("Responds with 'Hello, World!'", function(done) {
 
 Testing JSON responses:
 
-```
+```javascript
 var app = require("../");
 var supertest = require("supertest")(app);
 
@@ -170,7 +170,7 @@ it("Responds with 'Hello, World!' object", function(done) {
 
 Testing responses with a RegEx:
 
-```
+```javascript
 var app = require("../");
 var supertest = require("supertest")(app);
 
@@ -192,7 +192,7 @@ https://github.com/visionmedia/supertest#api
 
 Testing external APIs
 
-```
+```javascript
 var supertest = require("supertest")("http://google.com/");
 
 supertest.get("/foo") // Sends a request to http://google.com/foo
@@ -204,7 +204,7 @@ supertest.get("/foo") // Sends a request to http://google.com/foo
 Other examples
 
 
-```
+```javascript
 // Uploading a file
 supertest
     .post("/upload")
@@ -216,7 +216,7 @@ supertest
 
 Other examples
 
-```
+```javascript
 // Set a header and send a JSON body
 supertest
     .post("/foo")
