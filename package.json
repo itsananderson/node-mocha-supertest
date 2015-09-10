@@ -1,0 +1,23 @@
+{
+  "name": "node-mocha-supertest",
+  "version": "1.0.0",
+  "description": "A quick tour through testing Node APIs with Mocha and supertest",
+  "dependencies": {
+    "cleaver": "^0.7.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "build": "node_modules/.bin/cleaver node-mocha-supertest.md",
+    "deploy": "npm run build && cd output && git commit -am 'Deploy' && git push"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itsananderson/node-mocha-supertest.git"
+  },
+  "author": "Will Anderson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/itsananderson/node-mocha-supertest/issues"
+  },
+  "homepage": "http://willi.am/node-mocha-supertest"
+}
