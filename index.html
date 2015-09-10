@@ -446,30 +446,30 @@ describe(<span class="string">"Some module"</span>, <span class="keyword">functi
   </div>
   <div class="slide hidden -" id="slide-8">
     <section class="slide-content"><p>A note on async code:</p>
-<pre><code>it(&#39;can do async work&#39;, function(done) {
-    setTimeout(function() {
+<pre><code class="lang-javascript">it(<span class="string">'can do async work'</span>, <span class="keyword">function</span>(done) {
+    setTimeout(<span class="keyword">function</span>() {
         done();
-    }, 1000);
+    }, <span class="number">1000</span>);
 });</code></pre>
 </section>
   </div>
   <div class="slide hidden -" id="slide-9">
     <section class="slide-content"><p>More advanced example:</p>
-<pre><code>var app = require(&quot;../&quot;);
+<pre><code class="lang-javascript"><span class="keyword">var</span> app = require(<span class="string">"../"</span>);
 
-describe(&quot;Advanced module&quot;, function() {
-    var server;
-    var port;
-    before(function(done) {
-        server = app.listen(0, done);
+describe(<span class="string">"Advanced module"</span>, <span class="keyword">function</span>() {
+    <span class="keyword">var</span> server;
+    <span class="keyword">var</span> port;
+    before(<span class="keyword">function</span>(done) {
+        server = app.listen(<span class="number">0</span>, done);
         port = server.address.port();
     });
 
-    after(function() {
+    after(<span class="keyword">function</span>() {
         server.stop();
     });
 
-    // other tests here
+    <span class="comment">// other tests here</span>
 });</code></pre>
 </section>
   </div>
@@ -484,14 +484,14 @@ describe(&quot;Advanced module&quot;, function() {
   </div>
   <div class="slide hidden -" id="slide-11">
     <section class="slide-content"><p>Before supertest</p>
-<pre><code>var app = reqiure(&quot;../&quot;);
-var request = require(&quot;request&quot;);
-var assert = require(&quot;assert&quot;);
+<pre><code class="lang-javascript"><span class="keyword">var</span> app = reqiure(<span class="string">"../"</span>);
+<span class="keyword">var</span> request = require(<span class="string">"request"</span>);
+<span class="keyword">var</span> assert = require(<span class="string">"assert"</span>);
 
-it(&quot;Responds with &#39;Hello, World!&#39;&quot;, function(done) {
-    request(&quot;http://localhost:&quot; + port + &quot;/&quot;, function(response, body) {
-        assert.equal(response.statusCode, 200);
-        assert.equal(body, &quot;Hello, World!&quot;);
+it(<span class="string">"Responds with 'Hello, World!'"</span>, <span class="keyword">function</span>(done) {
+    request(<span class="string">"http://localhost:"</span> + port + <span class="string">"/"</span>, <span class="keyword">function</span>(response, body) {
+        assert.equal(response.statusCode, <span class="number">200</span>);
+        assert.equal(body, <span class="string">"Hello, World!"</span>);
         done();
     });
 });</code></pre>
@@ -499,27 +499,27 @@ it(&quot;Responds with &#39;Hello, World!&#39;&quot;, function(done) {
   </div>
   <div class="slide hidden -" id="slide-12">
     <section class="slide-content"><p>After supertest:</p>
-<pre><code>var app = require(&quot;../&quot;);
-var supertest = require(&quot;supertest&quot;)(app);
+<pre><code class="lang-javascript"><span class="keyword">var</span> app = require(<span class="string">"../"</span>);
+<span class="keyword">var</span> supertest = require(<span class="string">"supertest"</span>)(app);
 
-it(&quot;Responds with &#39;Hello, World!&#39;&quot;, function(done) {
-    supertest(&quot;/&quot;)
-        .expect(200)
-        .expect(&quot;Hello, World&quot;)
+it(<span class="string">"Responds with 'Hello, World!'"</span>, <span class="keyword">function</span>(done) {
+    supertest(<span class="string">"/"</span>)
+        .expect(<span class="number">200</span>)
+        .expect(<span class="string">"Hello, World!"</span>)
         .end(done);
 });</code></pre>
 </section>
   </div>
   <div class="slide hidden -" id="slide-13">
     <section class="slide-content"><p>Testing JSON responses:</p>
-<pre><code>var app = require(&quot;../&quot;);
-var supertest = require(&quot;supertest&quot;)(app);
+<pre><code class="lang-javascript"><span class="keyword">var</span> app = require(<span class="string">"../"</span>);
+<span class="keyword">var</span> supertest = require(<span class="string">"supertest"</span>)(app);
 
-it(&quot;Responds with &#39;Hello, World!&#39; object&quot;, function(done) {
-    supertest(&quot;/json&quot;)
-        .expect(200)
+it(<span class="string">"Responds with 'Hello, World!' object"</span>, <span class="keyword">function</span>(done) {
+    supertest(<span class="string">"/json"</span>)
+        .expect(<span class="number">200</span>)
         .expect({
-            message: &quot;Hello, World!&quot;
+            message: <span class="string">"Hello, World!"</span>
         })
         .end(done);
 });</code></pre>
@@ -527,50 +527,68 @@ it(&quot;Responds with &#39;Hello, World!&#39; object&quot;, function(done) {
   </div>
   <div class="slide hidden -" id="slide-14">
     <section class="slide-content"><p>Testing responses with a RegEx:</p>
-<pre><code>var app = require(&quot;../&quot;);
-var supertest = require(&quot;supertest&quot;)(app);
+<pre><code class="lang-javascript"><span class="keyword">var</span> app = require(<span class="string">"../"</span>);
+<span class="keyword">var</span> supertest = require(<span class="string">"supertest"</span>)(app);
 
-it(&quot;Responds with &#39;Hello, World!&#39; object&quot;, function(done) {
-    supertest(&quot;/&quot;)
-        .expect(200)
-        .expect(/Hello.*/)
+it(<span class="string">"Responds with 'Hello, World!' object"</span>, <span class="keyword">function</span>(done) {
+    supertest(<span class="string">"/"</span>)
+        .expect(<span class="number">200</span>)
+        .expect(<span class="regexp">/Hello.*/</span>)
         .end(done);
 });</code></pre>
 </section>
   </div>
   <div class="slide hidden -" id="slide-15">
-    <section class="slide-content"><p>Lots more examples:</p>
-<p><a href="https://github.com/visionmedia/supertest#api">https://github.com/visionmedia/supertest#api</a></p>
+    <section class="slide-content"><p>Testing responses with a custom validator function:</p>
+<pre><code class="lang-javascript">supertest(<span class="string">"/nav"</span>)
+    .expect(<span class="number">200</span>)
+    .expect(<span class="keyword">function</span>(res) {
+        assert(res.body.prev, <span class="string">"Expected prev link"</span>);
+        assert(res.body.next, <span class="string">"Expected next link"</span>);
+    })
+    .end(done);</code></pre>
 </section>
   </div>
   <div class="slide hidden -" id="slide-16">
-    <section class="slide-content"><p>Testing external APIs</p>
-<pre><code>var supertest = require(&quot;supertest&quot;)(&quot;http://google.com/&quot;);
-
-supertest.get(&quot;/foo&quot;) // Sends a request to http://google.com/foo
-    .end();</code></pre>
+    <section class="slide-content"><p>Lots more validation examples:</p>
+<p><a href="https://github.com/visionmedia/supertest#api">https://github.com/visionmedia/supertest#api</a></p>
 </section>
   </div>
   <div class="slide hidden -" id="slide-17">
-    <section class="slide-content"><p>Other examples</p>
-<pre><code>// Uploading a file
-supertest
-    .post(&quot;/upload&quot;)
-    .attach(&quot;fieldName&quot;, &quot;path/to/file.jpg&quot;)
+    <section class="slide-content"><p>Testing external APIs</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> supertest = require(<span class="string">"supertest"</span>)(<span class="string">"http://www.google.com/"</span>);
+
+<span class="comment">// http://google.com/foo</span>
+supertest.get(<span class="string">"/foo"</span>)
+    .end();
+
+<span class="comment">// http://google.com/search?q=test</span>
+supertest.get(<span class="string">"/search?q=test"</span>)
     .end();</code></pre>
 </section>
   </div>
   <div class="slide hidden -" id="slide-18">
     <section class="slide-content"><p>Other examples</p>
-<pre><code>// Set a header and send a JSON body
+<pre><code class="lang-javascript"><span class="comment">// Uploading a file</span>
 supertest
-    .post(&quot;/foo&quot;)
-    .set(&quot;Content-Type&quot;, &quot;application/json&quot;)
-    .send({message: &quot;Hello, Server!&quot;)
+    .post(<span class="string">"/upload"</span>)
+    .attach(<span class="string">"fieldName"</span>, <span class="string">"path/to/file.jpg"</span>)
     .end();</code></pre>
 </section>
   </div>
-  <div class="slide hidden" id="slide-19">
+  <div class="slide hidden -" id="slide-19">
+    <section class="slide-content"><p>Other examples</p>
+<pre><code class="lang-javascript"><span class="comment">// Set a header and send a JSON body</span>
+supertest
+    .post(<span class="string">"/foo"</span>)
+    .set(<span class="string">"Content-Type"</span>, <span class="string">"application/json"</span>)
+    .send({
+        message: <span class="string">"Hello, Server!"</span>
+    })
+    .end();</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-20">
     <section class="slide-content"><div class="author">
   <h1 class="name">Will Anderson</h1>
     <h3 class="twitter">
