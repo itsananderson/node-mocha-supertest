@@ -221,7 +221,7 @@ supertest.get("/search?q=test")
 
 ---
 
-Other examples
+Other supertest examples
 
 
 ```javascript
@@ -234,7 +234,7 @@ supertest
 
 ---
 
-Other examples
+Other supertest examples
 
 ```javascript
 // Set a header and send a JSON body
