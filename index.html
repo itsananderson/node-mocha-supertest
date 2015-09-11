@@ -655,9 +655,105 @@ describe(<span class="string">"UserManager"</span>, <span class="keyword">functi
 </section>
   </div>
   <div class="slide hidden -" id="slide-24">
-    <section class="slide-content"></section>
+    <section class="slide-content"><p>Composing Express middleware:</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> users = require(<span class="string">"./routes/users"</span>);
+<span class="keyword">var</span> friends = require(<span class="string">"./routes/friends"</span>);
+<span class="keyword">var</span> messages = require(<span class="string">"./routes/messages"</span>);
+<span class="keyword">var</span> auth = require(<span class="string">"./routes/auth"</span>);
+
+<span class="keyword">var</span> app = require(<span class="string">"express"</span>)();
+
+app.use(auth.router());
+app.use(users);
+app.use(auth.authenticate(), friends);
+app.use(auth.authenticate(), messages);
+
+app.listen(process.env.PORT || <span class="number">3000</span>);</code></pre>
+</section>
   </div>
-  <div class="slide hidden" id="slide-25">
+  <div class="slide hidden -" id="slide-25">
+    <section class="slide-content"><p>Testing Express middleware:</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> app = require(<span class="string">"express"</span>)();
+<span class="keyword">var</span> messages = require(<span class="string">"../routes/messages"</span>);
+
+app.use(<span class="keyword">function</span>(req, res, next) {
+    req.user = {
+        id: <span class="number">1</span>
+    };
+    next();
+});
+
+app.use(messages); <span class="comment">// No authentication</span>
+
+<span class="keyword">var</span> supertest = require(<span class="string">"supertest"</span>)(app);
+
+
+<span class="comment">// ... mocha tests</span></code></pre>
+</section>
+  </div>
+  <div class="slide hidden -" id="slide-26">
+    <section class="slide-content"><h1 id="sinon-js">Sinon.JS</h1>
+<ul>
+<li>Stubs</li>
+<li>Spies</li>
+<li>Mocks</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden -" id="slide-27">
+    <section class="slide-content"><h2 id="sinon-stubs">Sinon Stubs</h2>
+<h2 id="http-sinonjs-org-docs-stubs"><a href="http://sinonjs.org/docs/#stubs">http://sinonjs.org/docs/#stubs</a></h2>
+</section>
+  </div>
+  <div class="slide hidden -" id="slide-28">
+    <section class="slide-content"><pre><code class="lang-javascript"><span class="comment">// Create a single function</span>
+<span class="keyword">var</span> returnTrue = sinon.stub().returns(<span class="literal">true</span>);
+<span class="keyword">var</span> returnFalse = sinon.stub().returns(<span class="literal">false</span>);
+<span class="keyword">var</span> throwsError = sinon.stub().throws(<span class="keyword">new</span> Error(<span class="string">"some error"</span>));</code></pre>
+</section>
+  </div>
+  <div class="slide hidden -" id="slide-29">
+    <section class="slide-content"><pre><code class="lang-javascript"><span class="comment">// Return different values for different inputs</span>
+<span class="keyword">var</span> factorial = sinon.stub();
+factorial.withArgs(<span class="number">1</span>).returns(<span class="number">1</span>);
+factorial.withArgs(<span class="number">2</span>).returns(<span class="number">2</span>);
+factorial.withArgs(<span class="number">3</span>).returns(<span class="number">6</span>);</code></pre>
+</section>
+  </div>
+  <div class="slide hidden -" id="slide-30">
+    <section class="slide-content"><pre><code class="lang-javascript"><span class="comment">// Modify an object</span>
+<span class="keyword">var</span> stubbed = sinon.stub(dbConnection.users, <span class="string">"findByUsername"</span>).returns({
+    username: <span class="string">"foo"</span>,
+    passwrod: hash(<span class="string">"1234"</span>)
+});
+
+stubbed.restore(); <span class="comment">// Restore original method</span></code></pre>
+</section>
+  </div>
+  <div class="slide hidden -" id="slide-31">
+    <section class="slide-content"><h2 id="sinon-spies">Sinon Spies</h2>
+<h2 id="http-sinonjs-org-docs-spies"><a href="http://sinonjs.org/docs/#spies">http://sinonjs.org/docs/#spies</a></h2>
+</section>
+  </div>
+  <div class="slide hidden -" id="slide-32">
+    <section class="slide-content"><p>Anonymous function that tracks whether it&#39;s been called</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> callback = sinon.spy();
+PubSub.subscribe(<span class="string">"message"</span>, callback);
+PubSub.publishSync(<span class="string">"message"</span>);
+assert(callback.called);</code></pre>
+</section>
+  </div>
+  <div class="slide hidden -" id="slide-33">
+    <section class="slide-content"><p>Function wrapper spy</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> spyHash = sinon.spy(hash);
+<span class="keyword">var</span> manager = <span class="keyword">new</span> UserManager(db, spyHash);
+
+manager.validateLogin(<span class="string">"foo"</span>, <span class="string">"1234"</span>); <span class="comment">// Should call hashing function</span>
+
+assert(spyHash.called);</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-34">
     <section class="slide-content"><div class="author">
   <h1 class="name">Will Anderson</h1>
     <h3 class="twitter">
