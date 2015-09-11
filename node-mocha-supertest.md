@@ -35,8 +35,11 @@ http://willi.am/node-mocha-supertest
 ---
 
 Mocha
+===
 
-http://mochajs.org/
+* http://mochajs.org/
+* Simple syntax
+* Many test supported reporters
 
 ---
 
@@ -246,3 +249,78 @@ supertest
     })
     .end();
 ```
+
+---
+
+Inversion of Control
+===
+
+* Components don't construct their own dependencies
+* Decouples your application
+* Drastically simplifies testing
+
+---
+
+Before IoC:
+
+```javascript
+function UserManager() {
+    this.db = new DBConnection("username", "password");
+    this.hasher = PasswordHashers.SHA256;
+}
+
+UserManager.prototype.validateLogin = function(username, password) {
+    var user = this.db.users.findByUsername(username);
+    return user && user.password === this.hasher(password);
+};
+
+// ...
+```
+
+---
+
+After IoC:
+
+```javascript
+function UserManager(dbConnection, hasher) {
+    this.db = dbConnection;
+    this.hasher = hasher;
+}
+
+// ...
+```
+
+---
+
+Testing a component with IoC:
+
+```javascript
+var UserManager = require("../user-manager");
+
+function fakeHasher(input) {
+    return output + "5";
+}
+
+var fakeDbConnection = {
+    users: {
+        findByUsername: function() {
+            {
+                username: "foo",
+                password: fakeHasher("1234")
+            }
+        }
+    }
+};
+
+var manager = new UserManager(fakeDbConnection, fakeHasher);
+
+describe("UserManager", function() {
+    it("validates a username and password", function() {
+        assert(manager.validateLogin("foo", "1234"));
+    });
+});
+```
+
+---
+
+
