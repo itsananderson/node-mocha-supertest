@@ -419,8 +419,12 @@ pre .chunk {
 </section>
   </div>
   <div class="slide hidden -" id="slide-5">
-    <section class="slide-content"><p>Mocha</p>
-<p><a href="http://mochajs.org/">http://mochajs.org/</a></p>
+    <section class="slide-content"><h1 id="mocha">Mocha</h1>
+<ul>
+<li><a href="http://mochajs.org/">http://mochajs.org/</a></li>
+<li>Simple syntax</li>
+<li>Many test supported reporters</li>
+</ul>
 </section>
   </div>
   <div class="slide hidden -" id="slide-6">
@@ -568,7 +572,7 @@ supertest.get(<span class="string">"/search?q=test"</span>)
 </section>
   </div>
   <div class="slide hidden -" id="slide-18">
-    <section class="slide-content"><p>Other examples</p>
+    <section class="slide-content"><p>Other supertest examples</p>
 <pre><code class="lang-javascript"><span class="comment">// Uploading a file</span>
 supertest
     .post(<span class="string">"/upload"</span>)
@@ -577,7 +581,7 @@ supertest
 </section>
   </div>
   <div class="slide hidden -" id="slide-19">
-    <section class="slide-content"><p>Other examples</p>
+    <section class="slide-content"><p>Other supertest examples</p>
 <pre><code class="lang-javascript"><span class="comment">// Set a header and send a JSON body</span>
 supertest
     .post(<span class="string">"/foo"</span>)
@@ -588,7 +592,72 @@ supertest
     .end();</code></pre>
 </section>
   </div>
-  <div class="slide hidden" id="slide-20">
+  <div class="slide hidden -" id="slide-20">
+    <section class="slide-content"><h1 id="inversion-of-control">Inversion of Control</h1>
+<ul>
+<li>Components don&#39;t construct their own dependencies</li>
+<li>Decouples your application</li>
+<li>Drastically simplifies testing</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden -" id="slide-21">
+    <section class="slide-content"><p>Before IoC:</p>
+<pre><code class="lang-javascript"><span class="function"><span class="keyword">function</span> <span class="title">UserManager</span><span class="params">()</span> {</span>
+    <span class="keyword">this</span>.db = <span class="keyword">new</span> DBConnection(<span class="string">"username"</span>, <span class="string">"password"</span>);
+    <span class="keyword">this</span>.hasher = PasswordHashers.SHA256;
+}
+
+UserManager.prototype.validateLogin = <span class="keyword">function</span>(username, password) {
+    <span class="keyword">var</span> user = <span class="keyword">this</span>.db.users.findByUsername(username);
+    <span class="keyword">return</span> user &amp;&amp; user.password === <span class="keyword">this</span>.hasher(password);
+};
+
+<span class="comment">// ...</span></code></pre>
+</section>
+  </div>
+  <div class="slide hidden -" id="slide-22">
+    <section class="slide-content"><p>After IoC:</p>
+<pre><code class="lang-javascript"><span class="function"><span class="keyword">function</span> <span class="title">UserManager</span><span class="params">(dbConnection, hasher)</span> {</span>
+    <span class="keyword">this</span>.db = dbConnection;
+    <span class="keyword">this</span>.hasher = hasher;
+}
+
+<span class="comment">// ...</span></code></pre>
+</section>
+  </div>
+  <div class="slide hidden -" id="slide-23">
+    <section class="slide-content"><p>Testing a component with IoC:</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> UserManager = require(<span class="string">"../user-manager"</span>);
+
+<span class="function"><span class="keyword">function</span> <span class="title">fakeHasher</span><span class="params">(input)</span> {</span>
+    <span class="keyword">return</span> output + <span class="string">"5"</span>;
+}
+
+<span class="keyword">var</span> fakeDbConnection = {
+    users: {
+        findByUsername: <span class="keyword">function</span>() {
+            {
+                username: <span class="string">"foo"</span>,
+                password: fakeHasher(<span class="string">"1234"</span>)
+            }
+        }
+    }
+};
+
+<span class="keyword">var</span> manager = <span class="keyword">new</span> UserManager(fakeDbConnection, fakeHasher);
+
+describe(<span class="string">"UserManager"</span>, <span class="keyword">function</span>() {
+    it(<span class="string">"validates a username and password"</span>, <span class="keyword">function</span>() {
+        assert(manager.validateLogin(<span class="string">"foo"</span>, <span class="string">"1234"</span>));
+    });
+});</code></pre>
+</section>
+  </div>
+  <div class="slide hidden -" id="slide-24">
+    <section class="slide-content"></section>
+  </div>
+  <div class="slide hidden" id="slide-25">
     <section class="slide-content"><div class="author">
   <h1 class="name">Will Anderson</h1>
     <h3 class="twitter">
