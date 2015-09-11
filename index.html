@@ -736,7 +736,7 @@ stubbed.restore(); <span class="comment">// Restore original method</span></code
 </section>
   </div>
   <div class="slide hidden -" id="slide-32">
-    <section class="slide-content"><p>Anonymous function that tracks whether it&#39;s been called</p>
+    <section class="slide-content"><p>Spy on an anonymous function</p>
 <pre><code class="lang-javascript"><span class="keyword">var</span> callback = sinon.spy();
 PubSub.subscribe(<span class="string">"message"</span>, callback);
 PubSub.publishSync(<span class="string">"message"</span>);
@@ -744,7 +744,7 @@ assert(callback.called);</code></pre>
 </section>
   </div>
   <div class="slide hidden -" id="slide-33">
-    <section class="slide-content"><p>Function wrapper spy</p>
+    <section class="slide-content"><p>Spy on an existing function</p>
 <pre><code class="lang-javascript"><span class="keyword">var</span> spyHash = sinon.spy(hash);
 <span class="keyword">var</span> manager = <span class="keyword">new</span> UserManager(db, spyHash);
 
