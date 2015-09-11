@@ -323,4 +323,119 @@ describe("UserManager", function() {
 
 ---
 
+Composing Express middleware:
 
+```javascript
+var users = require("./routes/users");
+var friends = require("./routes/friends");
+var messages = require("./routes/messages");
+var auth = require("./routes/auth");
+
+var app = require("express")();
+
+app.use(auth.router());
+app.use(users);
+app.use(auth.authenticate(), friends);
+app.use(auth.authenticate(), messages);
+
+app.listen(process.env.PORT || 3000);
+```
+
+---
+
+Testing Express middleware:
+
+```javascript
+var app = require("express")();
+var messages = require("../routes/messages");
+
+app.use(function(req, res, next) {
+    req.user = {
+        id: 1
+    };
+    next();
+});
+
+app.use(messages); // No authentication
+
+var supertest = require("supertest")(app);
+
+
+// ... mocha tests
+```
+
+---
+
+Sinon.JS
+===
+
+* Stubs
+* Spies
+* Mocks
+
+---
+
+## Sinon Stubs
+
+## http://sinonjs.org/docs/#stubs
+
+---
+
+```javascript
+// Create a single function
+var returnTrue = sinon.stub().returns(true);
+var returnFalse = sinon.stub().returns(false);
+var throwsError = sinon.stub().throws(new Error("some error"));
+```
+
+---
+
+```javascript
+// Return different values for different inputs
+var factorial = sinon.stub();
+factorial.withArgs(1).returns(1);
+factorial.withArgs(2).returns(2);
+factorial.withArgs(3).returns(6);
+```
+
+---
+
+```javascript
+// Modify an object
+var stubbed = sinon.stub(dbConnection.users, "findByUsername").returns({
+    username: "foo",
+    passwrod: hash("1234")
+});
+
+stubbed.restore(); // Restore original method
+```
+
+---
+
+## Sinon Spies
+
+## http://sinonjs.org/docs/#spies
+
+---
+
+Anonymous function that tracks whether it's been called
+
+```javascript
+var callback = sinon.spy();
+PubSub.subscribe("message", callback);
+PubSub.publishSync("message");
+assert(callback.called);
+```
+
+---
+
+Function wrapper spy
+
+```javascript
+var spyHash = sinon.spy(hash);
+var manager = new UserManager(db, spyHash);
+
+manager.validateLogin("foo", "1234"); // Should call hashing function
+
+assert(spyHash.called);
+```
