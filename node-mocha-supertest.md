@@ -418,7 +418,7 @@ stubbed.restore(); // Restore original method
 
 ---
 
-Anonymous function that tracks whether it's been called
+Spy on an anonymous function
 
 ```javascript
 var callback = sinon.spy();
@@ -429,7 +429,7 @@ assert(callback.called);
 
 ---
 
-Function wrapper spy
+Spy on an existing function
 
 ```javascript
 var spyHash = sinon.spy(hash);
