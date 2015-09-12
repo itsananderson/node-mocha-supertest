@@ -97,12 +97,38 @@ describe("Some module", function() {
 Basic Mocha API:
 
 **`describe`**  
-High level grouping (suite) of tests. You can nest `describe` inside another `describes`  
+High level grouping (suite) of tests. You can nest `describe` inside another `describe`  
 
 **`it`**  
 A single test function. Usually tests one feature or edge case
 
 ---
+
+```javascript
+describe("My feature", function() {
+    describe("subfeature 1", function() {
+        it("does one thing", function() {
+        });
+
+        it("does another thing", function() {
+        });
+    });
+
+    describe("subfeature 2", function() {
+        it("does one thing", function() {
+        });
+
+        it("does another thing", function() {
+        });
+    });
+});
+```
+
+---
+
+![](img/nested-mocha.png)
+
+--
 
 Advanced Mocha hooks:
 
