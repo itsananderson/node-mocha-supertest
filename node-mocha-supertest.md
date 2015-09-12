@@ -680,6 +680,7 @@ describe("Foo", function() {
         done();
     });
 });
+```
 
 ---
 
