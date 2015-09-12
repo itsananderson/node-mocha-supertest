@@ -300,7 +300,8 @@ var app = require("../");
 var supertest = require("supertest")(app);
 
 it("Responds with 'Hello, World!'", function(done) {
-    supertest("/")
+    supertest
+        .get("/")
         .expect(200)
         .expect("Hello, World!")
         .end(done);
@@ -312,17 +313,13 @@ it("Responds with 'Hello, World!'", function(done) {
 Testing JSON responses:
 
 ```javascript
-var app = require("../");
-var supertest = require("supertest")(app);
-
-it("Responds with 'Hello, World!' object", function(done) {
-    supertest("/json")
-        .expect(200)
-        .expect({
-            message: "Hello, World!"
-        })
-        .end(done);
-});
+supertest
+    .get("/json")
+    .expect(200)
+    .expect({
+        message: "Hello, World!"
+    })
+    .end(done);
 ```
 
 ---
@@ -330,15 +327,11 @@ it("Responds with 'Hello, World!' object", function(done) {
 Testing responses with a RegEx:
 
 ```javascript
-var app = require("../");
-var supertest = require("supertest")(app);
-
-it("Responds with 'Hello, World!' object", function(done) {
-    supertest("/")
-        .expect(200)
-        .expect(/Hello.*/)
-        .end(done);
-});
+supertest
+    .get("/")
+    .expect(200)
+    .expect(/Hello.*/)
+    .end(done);
 ```
 
 ---
@@ -346,7 +339,8 @@ it("Responds with 'Hello, World!' object", function(done) {
 Testing responses with a custom validator function:
 
 ```javascript
-supertest("/nav")
+supertest
+    .get("/nav")
     .expect(200)
     .expect(function(res) {
         assert(res.body.prev, "Expected prev link");
