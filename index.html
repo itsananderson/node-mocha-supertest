@@ -401,7 +401,7 @@ pre .chunk {
   </div>
 
   <div class="slide -" id="slide-1">
-    <section class="slide-content"><p>Will Anderson<br>will@itsananderson.com<br><a href="http://willi.am/">http://willi.am/</a><br><a href="https://github.com/itsananderson">https://github.com/itsananderson</a><br><a href="https://twitter.com/itsananderson">https://twitter.com/itsananderson</a></p>
+    <section class="slide-content"><p>Will Anderson<br>will@itsananderson.com<br><a href="http://willi.am/node-mocha-supertest">http://willi.am/node-mocha-supertest</a><br><a href="https://github.com/itsananderson">https://github.com/itsananderson</a><br><a href="https://twitter.com/itsananderson">https://twitter.com/itsananderson</a></p>
 </section>
   </div>
   <div class="slide hidden -" id="slide-2">
@@ -423,11 +423,34 @@ pre .chunk {
 <ul>
 <li><a href="http://mochajs.org/">http://mochajs.org/</a></li>
 <li>Simple syntax</li>
-<li>Many test supported reporters</li>
+<li>Many supported reporters</li>
 </ul>
 </section>
   </div>
   <div class="slide hidden -" id="slide-6">
+    <section class="slide-content"><p>Test runners:</p>
+<p><code>mocha --reporter dot</code></p>
+<p><img src="img/mocha-dot.gif" alt=""></p>
+</section>
+  </div>
+  <div class="slide hidden -" id="slide-7">
+    <section class="slide-content"><p>Test runners:</p>
+<p><code>mocha --reporter spec</code></p>
+<p><img src="img/mocha-spec.gif" alt=""></p>
+</section>
+  </div>
+  <div class="slide hidden -" id="slide-8">
+    <section class="slide-content"><p>Test runners:</p>
+<p><code>mocha --reporter nyan</code></p>
+<p><img src="img/mocha-nyan.gif" alt=""></p>
+</section>
+  </div>
+  <div class="slide hidden -" id="slide-9">
+    <section class="slide-content"><p>Lots more options:</p>
+<p><img src="img/mocha-reporters.png" alt=""></p>
+</section>
+  </div>
+  <div class="slide hidden -" id="slide-10">
     <section class="slide-content"><p>A Simple Example:</p>
 <pre><code class="lang-javascript"><span class="keyword">var</span> someModule = require(<span class="string">"../"</span>);
 <span class="keyword">var</span> assert = require(<span class="string">"assert"</span>);
@@ -437,10 +460,10 @@ describe(<span class="string">"Some module"</span>, <span class="keyword">functi
         assert(someModule.doesSomeThing());
     });
 });</code></pre>
-<p><img src="http://itsananderson.blob.core.windows.net/post-images/simple-mocha-test.png" alt=""></p>
+<p><img src="img/simple-mocha-test.png" alt=""></p>
 </section>
   </div>
-  <div class="slide hidden -" id="slide-7">
+  <div class="slide hidden -" id="slide-11">
     <section class="slide-content"><p>Basic Mocha components:</p>
 <p><code>describe</code> - High level grouping (suite) of tests<br><code>it</code> - A single test function. Usually tests one feature or edge case</p>
 <p>Advanced Mocha components:</p>
@@ -448,7 +471,7 @@ describe(<span class="string">"Some module"</span>, <span class="keyword">functi
 <p><code>beforeEach</code> - Run before every test in a test suite<br><code>afterEach</code> - Run after every test in a test suite</p>
 </section>
   </div>
-  <div class="slide hidden -" id="slide-8">
+  <div class="slide hidden -" id="slide-12">
     <section class="slide-content"><p>A note on async code:</p>
 <pre><code class="lang-javascript">it(<span class="string">'can do async work'</span>, <span class="keyword">function</span>(done) {
     setTimeout(<span class="keyword">function</span>() {
@@ -457,40 +480,145 @@ describe(<span class="string">"Some module"</span>, <span class="keyword">functi
 });</code></pre>
 </section>
   </div>
-  <div class="slide hidden -" id="slide-9">
-    <section class="slide-content"><p>More advanced example:</p>
-<pre><code class="lang-javascript"><span class="keyword">var</span> app = require(<span class="string">"../"</span>);
+  <div class="slide hidden -" id="slide-13">
+    <section class="slide-content"><p>A note on async code:</p>
+<pre><code class="lang-javascript">it(<span class="string">'can do async work'</span>, <span class="keyword">function</span>(done) {
+    setTimeout(done, <span class="number">1000</span>);
+});</code></pre>
+</section>
+  </div>
+  <div class="slide hidden -" id="slide-14">
+    <section class="slide-content"><p>The <code>done</code> callback can handle errors</p>
+<pre><code class="lang-javascript">it(<span class="string">'can do async work'</span>, <span class="keyword">function</span>(done) {
+    setTimeout(<span class="keyword">function</span>() {
+        done(<span class="keyword">new</span> Error(<span class="string">"Oh noes!"</span>);
+    }, <span class="number">1000</span>);
+});</code></pre>
+<p><img src="img/async-fail.png" alt=""></p>
+</section>
+  </div>
+  <div class="slide hidden -" id="slide-15">
+    <section class="slide-content"><h2 id="testing-an-api">Testing an API</h2>
+</section>
+  </div>
+  <div class="slide hidden -" id="slide-16">
+    <section class="slide-content"><p>Simple API server:</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> express = require(<span class="string">"express"</span>);
+<span class="keyword">var</span> app = express();
 
-describe(<span class="string">"Advanced module"</span>, <span class="keyword">function</span>() {
+app.get(<span class="string">"/"</span>, <span class="keyword">function</span>(req, res) {
+    res.send({ message: <span class="string">"Hello, World!"</span> });
+});
+
+app.get(<span class="string">"/foo"</span>, <span class="keyword">function</span>(req, res) {
+    res.send({ message: <span class="string">"foo foo"</span> });
+});
+
+app.listen(process.env.PORT || <span class="number">3000</span>);</code></pre>
+</section>
+  </div>
+  <div class="slide hidden -" id="slide-17">
+    <section class="slide-content"><p>Simple test:</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> assert = require(<span class="string">"assert"</span>);
+<span class="keyword">var</span> request = require(<span class="string">"request"</span>);
+
+require(<span class="string">"./server"</span>);
+
+describe(<span class="string">"Server"</span>, <span class="keyword">function</span>() {
+    it(<span class="string">"responds with JSON message 'Hello, World!' at the root"</span>, <span class="keyword">function</span>(done) {
+        request(<span class="string">"http://localhost:3000"</span>, <span class="keyword">function</span>(err, response, body) {
+            <span class="keyword">if</span> (err) done(err);
+
+            <span class="keyword">var</span> payload = JSON.parse(body);
+            assert.equal(payload.message, <span class="string">"Hello, World!"</span>);
+
+            done();
+        });
+    });
+});</code></pre>
+</section>
+  </div>
+  <div class="slide hidden -" id="slide-18">
+    <section class="slide-content"><p>Small problem: port conflicts</p>
+<pre><code class="lang-javascript">        request(<span class="string">"http://localhost:3000"</span>, <span class="keyword">function</span>(err, response, body) {</code></pre>
+</section>
+  </div>
+  <div class="slide hidden -" id="slide-19">
+    <section class="slide-content"><p>New server:</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> express = require(<span class="string">"express"</span>);
+<span class="keyword">var</span> app = express();
+
+app.get(<span class="string">"/"</span>, <span class="keyword">function</span>(req, res) {
+    res.send({ message: <span class="string">"Hello, World!"</span> });
+});
+
+app.get(<span class="string">"/foo"</span>, <span class="keyword">function</span>(req, res) {
+    res.send({ message: <span class="string">"foo foo"</span> });
+});
+
+module.exports = app;</code></pre>
+</section>
+  </div>
+  <div class="slide hidden -" id="slide-20">
+    <section class="slide-content"><p>New tests:</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> assert = require(<span class="string">"assert"</span>);
+<span class="keyword">var</span> request = require(<span class="string">"request"</span>);
+
+<span class="keyword">var</span> app = require(<span class="string">"./server"</span>);
+
+<span class="keyword">var</span> server = app.listen(<span class="number">0</span>);
+<span class="keyword">var</span> port = server.address().port;
+
+describe(<span class="string">"Server"</span>, <span class="keyword">function</span>() {
+    it(<span class="string">"responds with JSON message 'Hello, World!' at the root"</span>, <span class="keyword">function</span>(done) {
+        request(<span class="string">"http://localhost:"</span> + port + <span class="string">"/"</span>, <span class="keyword">function</span>(err, response, body) {
+            <span class="keyword">if</span> (err) done(err);
+
+            <span class="keyword">var</span> payload = JSON.parse(body);
+            assert.equal(payload.message, <span class="string">"Hello, World!"</span>);
+
+            done();
+        });
+    });
+});</code></pre>
+</section>
+  </div>
+  <div class="slide hidden -" id="slide-21">
+    <section class="slide-content"><p>Isolating server for each test:</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> request = require(<span class="string">"request"</span>);
+<span class="keyword">var</span> app = require(<span class="string">"./server"</span>);
+
+describe(<span class="string">"API Server"</span>, <span class="keyword">function</span>() {
     <span class="keyword">var</span> server;
     <span class="keyword">var</span> port;
-    before(<span class="keyword">function</span>(done) {
+    beforeEach(<span class="keyword">function</span>(done) {
         server = app.listen(<span class="number">0</span>, done);
         port = server.address.port();
     });
 
-    after(<span class="keyword">function</span>() {
+    afterEach(<span class="keyword">function</span>() {
         server.stop();
     });
 
-    <span class="comment">// other tests here</span>
-});</code></pre>
+    <span class="comment">// ...</span></code></pre>
 </section>
   </div>
-  <div class="slide hidden -" id="slide-10">
-    <section class="slide-content"><h1 id="supertest">Supertest</h1>
+  <div class="slide hidden -" id="slide-22">
+    <section class="slide-content"><h2 id="supertest">Supertest</h2>
 <ul>
 <li>Takes care of server setup and teardown</li>
 <li>Simplifies request and response validation</li>
-<li>Makes tests very easy to read</li>
+<li>Makes tests easier to read</li>
 </ul>
 </section>
   </div>
-  <div class="slide hidden -" id="slide-11">
+  <div class="slide hidden -" id="slide-23">
     <section class="slide-content"><p>Before supertest</p>
 <pre><code class="lang-javascript"><span class="keyword">var</span> app = reqiure(<span class="string">"../"</span>);
 <span class="keyword">var</span> request = require(<span class="string">"request"</span>);
 <span class="keyword">var</span> assert = require(<span class="string">"assert"</span>);
+
+<span class="comment">// server setup</span>
 
 it(<span class="string">"Responds with 'Hello, World!'"</span>, <span class="keyword">function</span>(done) {
     request(<span class="string">"http://localhost:"</span> + port + <span class="string">"/"</span>, <span class="keyword">function</span>(response, body) {
@@ -501,50 +629,44 @@ it(<span class="string">"Responds with 'Hello, World!'"</span>, <span class="key
 });</code></pre>
 </section>
   </div>
-  <div class="slide hidden -" id="slide-12">
+  <div class="slide hidden -" id="slide-24">
     <section class="slide-content"><p>After supertest:</p>
 <pre><code class="lang-javascript"><span class="keyword">var</span> app = require(<span class="string">"../"</span>);
 <span class="keyword">var</span> supertest = require(<span class="string">"supertest"</span>)(app);
 
 it(<span class="string">"Responds with 'Hello, World!'"</span>, <span class="keyword">function</span>(done) {
-    supertest(<span class="string">"/"</span>)
+    supertest
+        .get(<span class="string">"/"</span>)
         .expect(<span class="number">200</span>)
         .expect(<span class="string">"Hello, World!"</span>)
         .end(done);
 });</code></pre>
 </section>
   </div>
-  <div class="slide hidden -" id="slide-13">
+  <div class="slide hidden -" id="slide-25">
     <section class="slide-content"><p>Testing JSON responses:</p>
-<pre><code class="lang-javascript"><span class="keyword">var</span> app = require(<span class="string">"../"</span>);
-<span class="keyword">var</span> supertest = require(<span class="string">"supertest"</span>)(app);
-
-it(<span class="string">"Responds with 'Hello, World!' object"</span>, <span class="keyword">function</span>(done) {
-    supertest(<span class="string">"/json"</span>)
-        .expect(<span class="number">200</span>)
-        .expect({
-            message: <span class="string">"Hello, World!"</span>
-        })
-        .end(done);
-});</code></pre>
+<pre><code class="lang-javascript">supertest
+    .get(<span class="string">"/json"</span>)
+    .expect(<span class="number">200</span>)
+    .expect({
+        message: <span class="string">"Hello, World!"</span>
+    })
+    .end(done);</code></pre>
 </section>
   </div>
-  <div class="slide hidden -" id="slide-14">
+  <div class="slide hidden -" id="slide-26">
     <section class="slide-content"><p>Testing responses with a RegEx:</p>
-<pre><code class="lang-javascript"><span class="keyword">var</span> app = require(<span class="string">"../"</span>);
-<span class="keyword">var</span> supertest = require(<span class="string">"supertest"</span>)(app);
-
-it(<span class="string">"Responds with 'Hello, World!' object"</span>, <span class="keyword">function</span>(done) {
-    supertest(<span class="string">"/"</span>)
-        .expect(<span class="number">200</span>)
-        .expect(<span class="regexp">/Hello.*/</span>)
-        .end(done);
-});</code></pre>
+<pre><code class="lang-javascript">supertest
+    .get(<span class="string">"/"</span>)
+    .expect(<span class="number">200</span>)
+    .expect(<span class="regexp">/Hello.*/</span>)
+    .end(done);</code></pre>
 </section>
   </div>
-  <div class="slide hidden -" id="slide-15">
+  <div class="slide hidden -" id="slide-27">
     <section class="slide-content"><p>Testing responses with a custom validator function:</p>
-<pre><code class="lang-javascript">supertest(<span class="string">"/nav"</span>)
+<pre><code class="lang-javascript">supertest
+    .get(<span class="string">"/nav"</span>)
     .expect(<span class="number">200</span>)
     .expect(<span class="keyword">function</span>(res) {
         assert(res.body.prev, <span class="string">"Expected prev link"</span>);
@@ -553,12 +675,12 @@ it(<span class="string">"Responds with 'Hello, World!' object"</span>, <span cla
     .end(done);</code></pre>
 </section>
   </div>
-  <div class="slide hidden -" id="slide-16">
+  <div class="slide hidden -" id="slide-28">
     <section class="slide-content"><p>Lots more validation examples:</p>
 <p><a href="https://github.com/visionmedia/supertest#api">https://github.com/visionmedia/supertest#api</a></p>
 </section>
   </div>
-  <div class="slide hidden -" id="slide-17">
+  <div class="slide hidden -" id="slide-29">
     <section class="slide-content"><p>Testing external APIs</p>
 <pre><code class="lang-javascript"><span class="keyword">var</span> supertest = require(<span class="string">"supertest"</span>)(<span class="string">"http://www.google.com/"</span>);
 
@@ -571,7 +693,7 @@ supertest.get(<span class="string">"/search?q=test"</span>)
     .end();</code></pre>
 </section>
   </div>
-  <div class="slide hidden -" id="slide-18">
+  <div class="slide hidden -" id="slide-30">
     <section class="slide-content"><p>Other supertest examples</p>
 <pre><code class="lang-javascript"><span class="comment">// Uploading a file</span>
 supertest
@@ -580,7 +702,7 @@ supertest
     .end();</code></pre>
 </section>
   </div>
-  <div class="slide hidden -" id="slide-19">
+  <div class="slide hidden -" id="slide-31">
     <section class="slide-content"><p>Other supertest examples</p>
 <pre><code class="lang-javascript"><span class="comment">// Set a header and send a JSON body</span>
 supertest
@@ -592,69 +714,72 @@ supertest
     .end();</code></pre>
 </section>
   </div>
-  <div class="slide hidden -" id="slide-20">
-    <section class="slide-content"><h1 id="inversion-of-control">Inversion of Control</h1>
+  <div class="slide hidden -" id="slide-32">
+    <section class="slide-content"><p>Other challenges:</p>
 <ul>
-<li>Components don&#39;t construct their own dependencies</li>
-<li>Decouples your application</li>
-<li>Drastically simplifies testing</li>
+<li>Database is slow, unavailable in testing environment (e.g. Travis CI)</li>
+<li>External resources are sometimes unpredictable</li>
+<li>Hard to test edge cases</li>
 </ul>
 </section>
   </div>
-  <div class="slide hidden -" id="slide-21">
+  <div class="slide hidden -" id="slide-33">
+    <section class="slide-content"><h2 id="inversion-of-control">Inversion of Control</h2>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Inversion_of_control">https://en.wikipedia.org/wiki/Inversion_of_control</a></li>
+<li>Components don&#39;t construct their own dependencies</li>
+<li>Decouples your application</li>
+<li>Drastically simplifies testing</li>
+<li>Related: Dependency Injection</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden -" id="slide-34">
     <section class="slide-content"><p>Before IoC:</p>
 <pre><code class="lang-javascript"><span class="function"><span class="keyword">function</span> <span class="title">UserManager</span><span class="params">()</span> {</span>
     <span class="keyword">this</span>.db = <span class="keyword">new</span> DBConnection(<span class="string">"username"</span>, <span class="string">"password"</span>);
-    <span class="keyword">this</span>.hasher = PasswordHashers.SHA256;
 }
 
-UserManager.prototype.validateLogin = <span class="keyword">function</span>(username, password) {
-    <span class="keyword">var</span> user = <span class="keyword">this</span>.db.users.findByUsername(username);
-    <span class="keyword">return</span> user &amp;&amp; user.password === <span class="keyword">this</span>.hasher(password);
+UserManager.prototype.createUser = <span class="keyword">function</span>(username, password) {
+    <span class="keyword">var</span> user = <span class="keyword">this</span>.db.users.create(username, hash(password));
 };
 
 <span class="comment">// ...</span></code></pre>
 </section>
   </div>
-  <div class="slide hidden -" id="slide-22">
+  <div class="slide hidden -" id="slide-35">
     <section class="slide-content"><p>After IoC:</p>
-<pre><code class="lang-javascript"><span class="function"><span class="keyword">function</span> <span class="title">UserManager</span><span class="params">(dbConnection, hasher)</span> {</span>
+<pre><code class="lang-javascript"><span class="function"><span class="keyword">function</span> <span class="title">UserManager</span><span class="params">(dbConnection)</span> {</span>
     <span class="keyword">this</span>.db = dbConnection;
-    <span class="keyword">this</span>.hasher = hasher;
 }
+
+UserManager.prototype.createUser = <span class="keyword">function</span>(username, password) {
+    <span class="keyword">var</span> user = <span class="keyword">this</span>.db.users.create(username, hash(password));
+};
 
 <span class="comment">// ...</span></code></pre>
 </section>
   </div>
-  <div class="slide hidden -" id="slide-23">
+  <div class="slide hidden -" id="slide-36">
     <section class="slide-content"><p>Testing a component with IoC:</p>
-<pre><code class="lang-javascript"><span class="keyword">var</span> UserManager = require(<span class="string">"../user-manager"</span>);
-
-<span class="function"><span class="keyword">function</span> <span class="title">fakeHasher</span><span class="params">(input)</span> {</span>
-    <span class="keyword">return</span> output + <span class="string">"5"</span>;
-}
-
-<span class="keyword">var</span> fakeDbConnection = {
-    users: {
-        findByUsername: <span class="keyword">function</span>() {
-            {
-                username: <span class="string">"foo"</span>,
-                password: fakeHasher(<span class="string">"1234"</span>)
-            }
-        }
-    }
-};
-
-<span class="keyword">var</span> manager = <span class="keyword">new</span> UserManager(fakeDbConnection, fakeHasher);
+<pre><code class="lang-javascript"><span class="keyword">var</span> UserManager = require(<span class="string">"./user-manager"</span>);
 
 describe(<span class="string">"UserManager"</span>, <span class="keyword">function</span>() {
-    it(<span class="string">"validates a username and password"</span>, <span class="keyword">function</span>() {
-        assert(manager.validateLogin(<span class="string">"foo"</span>, <span class="string">"1234"</span>));
+    it(<span class="string">"hashes passwords"</span>, <span class="keyword">function</span>() {
+        <span class="keyword">var</span> fakeDbConnection = {
+            users: {
+                create: <span class="keyword">function</span>(username, password) {
+                    assert.equal(password, hash(<span class="string">"1234"</span>));
+                }
+            }
+        };
+        <span class="keyword">var</span> manager = <span class="keyword">new</span> UserManager(fakeDbConnection);
+        manager.createUser(<span class="string">"foo"</span>, <span class="string">"1234"</span>);
     });
 });</code></pre>
 </section>
   </div>
-  <div class="slide hidden -" id="slide-24">
+  <div class="slide hidden -" id="slide-37">
     <section class="slide-content"><p>Composing Express middleware:</p>
 <pre><code class="lang-javascript"><span class="keyword">var</span> users = require(<span class="string">"./routes/users"</span>);
 <span class="keyword">var</span> friends = require(<span class="string">"./routes/friends"</span>);
@@ -671,11 +796,12 @@ app.use(auth.authenticate(), messages);
 app.listen(process.env.PORT || <span class="number">3000</span>);</code></pre>
 </section>
   </div>
-  <div class="slide hidden -" id="slide-25">
+  <div class="slide hidden -" id="slide-38">
     <section class="slide-content"><p>Testing Express middleware:</p>
 <pre><code class="lang-javascript"><span class="keyword">var</span> app = require(<span class="string">"express"</span>)();
 <span class="keyword">var</span> messages = require(<span class="string">"../routes/messages"</span>);
 
+<span class="comment">// Stub out a fake user</span>
 app.use(<span class="keyword">function</span>(req, res, next) {
     req.user = {
         id: <span class="number">1</span>
@@ -691,7 +817,7 @@ app.use(messages); <span class="comment">// No authentication</span>
 <span class="comment">// ... mocha tests</span></code></pre>
 </section>
   </div>
-  <div class="slide hidden -" id="slide-26">
+  <div class="slide hidden -" id="slide-39">
     <section class="slide-content"><h1 id="sinon-js">Sinon.JS</h1>
 <ul>
 <li>Stubs</li>
@@ -700,19 +826,19 @@ app.use(messages); <span class="comment">// No authentication</span>
 </ul>
 </section>
   </div>
-  <div class="slide hidden -" id="slide-27">
+  <div class="slide hidden -" id="slide-40">
     <section class="slide-content"><h2 id="sinon-stubs">Sinon Stubs</h2>
 <h2 id="http-sinonjs-org-docs-stubs"><a href="http://sinonjs.org/docs/#stubs">http://sinonjs.org/docs/#stubs</a></h2>
 </section>
   </div>
-  <div class="slide hidden -" id="slide-28">
+  <div class="slide hidden -" id="slide-41">
     <section class="slide-content"><pre><code class="lang-javascript"><span class="comment">// Create a single function</span>
 <span class="keyword">var</span> returnTrue = sinon.stub().returns(<span class="literal">true</span>);
 <span class="keyword">var</span> returnFalse = sinon.stub().returns(<span class="literal">false</span>);
 <span class="keyword">var</span> throwsError = sinon.stub().throws(<span class="keyword">new</span> Error(<span class="string">"some error"</span>));</code></pre>
 </section>
   </div>
-  <div class="slide hidden -" id="slide-29">
+  <div class="slide hidden -" id="slide-42">
     <section class="slide-content"><pre><code class="lang-javascript"><span class="comment">// Return different values for different inputs</span>
 <span class="keyword">var</span> factorial = sinon.stub();
 factorial.withArgs(<span class="number">1</span>).returns(<span class="number">1</span>);
@@ -720,7 +846,7 @@ factorial.withArgs(<span class="number">2</span>).returns(<span class="number">2
 factorial.withArgs(<span class="number">3</span>).returns(<span class="number">6</span>);</code></pre>
 </section>
   </div>
-  <div class="slide hidden -" id="slide-30">
+  <div class="slide hidden -" id="slide-43">
     <section class="slide-content"><pre><code class="lang-javascript"><span class="comment">// Modify an object</span>
 <span class="keyword">var</span> stubbed = sinon.stub(dbConnection.users, <span class="string">"findByUsername"</span>).returns({
     username: <span class="string">"foo"</span>,
@@ -730,12 +856,12 @@ factorial.withArgs(<span class="number">3</span>).returns(<span class="number">6
 stubbed.restore(); <span class="comment">// Restore original method</span></code></pre>
 </section>
   </div>
-  <div class="slide hidden -" id="slide-31">
+  <div class="slide hidden -" id="slide-44">
     <section class="slide-content"><h2 id="sinon-spies">Sinon Spies</h2>
 <h2 id="http-sinonjs-org-docs-spies"><a href="http://sinonjs.org/docs/#spies">http://sinonjs.org/docs/#spies</a></h2>
 </section>
   </div>
-  <div class="slide hidden -" id="slide-32">
+  <div class="slide hidden -" id="slide-45">
     <section class="slide-content"><p>Spy on an anonymous function</p>
 <pre><code class="lang-javascript"><span class="keyword">var</span> callback = sinon.spy();
 PubSub.subscribe(<span class="string">"message"</span>, callback);
@@ -743,7 +869,7 @@ PubSub.publishSync(<span class="string">"message"</span>);
 assert(callback.called);</code></pre>
 </section>
   </div>
-  <div class="slide hidden -" id="slide-33">
+  <div class="slide hidden -" id="slide-46">
     <section class="slide-content"><p>Spy on an existing function</p>
 <pre><code class="lang-javascript"><span class="keyword">var</span> spyHash = sinon.spy(hash);
 <span class="keyword">var</span> manager = <span class="keyword">new</span> UserManager(db, spyHash);
@@ -753,7 +879,55 @@ manager.validateLogin(<span class="string">"foo"</span>, <span class="string">"1
 assert(spyHash.called);</code></pre>
 </section>
   </div>
-  <div class="slide hidden" id="slide-34">
+  <div class="slide hidden -" id="slide-47">
+    <section class="slide-content"><h2 id="sinon-mocks">Sinon Mocks</h2>
+<h2 id="http-sinonjs-org-docs-mocks"><a href="http://sinonjs.org/docs/#mocks">http://sinonjs.org/docs/#mocks</a></h2>
+</section>
+  </div>
+  <div class="slide hidden -" id="slide-48">
+    <section class="slide-content"><pre><code class="lang-javascript"><span class="keyword">var</span> dbConnection = <span class="keyword">new</span> DBConnection(<span class="string">"username"</span>, <span class="string">"password"</span>);
+<span class="keyword">var</span> mockUsers = sinon.mock(dbConnection.users);
+mockUsers.expects(<span class="string">"create"</span>).once().withArgs(<span class="string">"foo"</span>, hash(<span class="string">"1234"</span>));
+
+<span class="keyword">var</span> manager = <span class="keyword">new</span> UserManager(dbConnection);
+manager.createUser(<span class="string">"foo"</span>, <span class="string">"1234"</span>);
+
+mockUsers.verify();
+mockUsers.restore();</code></pre>
+</section>
+  </div>
+  <div class="slide hidden -" id="slide-49">
+    <section class="slide-content"><h2 id="bonus-tip">Bonus Tip</h2>
+</section>
+  </div>
+  <div class="slide hidden -" id="slide-50">
+    <section class="slide-content"><p>Running a single Mocha test:</p>
+<pre><code class="lang-javascript">describe(<span class="string">"Foo"</span>, <span class="keyword">function</span>() {
+    it(<span class="string">"test1"</span>, <span class="keyword">function</span>() {});
+    it(<span class="string">"test2"</span>, <span class="keyword">function</span>() {});
+    it(<span class="string">"test2"</span>, <span class="keyword">function</span>() {});
+});</code></pre>
+</section>
+  </div>
+  <div class="slide hidden -" id="slide-51">
+    <section class="slide-content"><p>Running a single Mocha test:</p>
+<pre><code class="lang-javascript">describe(<span class="string">"Foo"</span>, <span class="keyword">function</span>() {
+    it(<span class="string">"test1"</span>, <span class="keyword">function</span>() {});
+    it.only(<span class="string">"test2"</span>, <span class="keyword">function</span>() {});
+    it(<span class="string">"test2"</span>, <span class="keyword">function</span>() {});
+});</code></pre>
+</section>
+  </div>
+  <div class="slide hidden -" id="slide-52">
+    <section class="slide-content"><p>Running a single Mocha test group:</p>
+<pre><code class="lang-javascript">describe.only(<span class="string">"Foo"</span>, <span class="keyword">function</span>() {
+    it(<span class="string">"test1"</span>, <span class="keyword">function</span>() {});
+    it(<span class="string">"test2"</span>, <span class="keyword">function</span>() {});
+    it(<span class="string">"test2"</span>, <span class="keyword">function</span>() {});
+});</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-53">
     <section class="slide-content"><div class="author">
   <h1 class="name">Will Anderson</h1>
     <h3 class="twitter">
@@ -761,6 +935,9 @@ assert(spyHash.called);</code></pre>
     </h3>
     <h3 class="github">
       <a href="https://github.com/itsananderson">itsananderson</a>
+    </h3>
+    <h3 class="url">
+      <a href="http://willi.am/node-mocha-supertest">http://willi.am/node-mocha-supertest</a>
     </h3>
     <h3 class="email">
       <a href="mailto:will@itsananderson.com">will@itsananderson.com</a>
