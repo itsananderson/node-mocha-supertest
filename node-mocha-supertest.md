@@ -280,6 +280,8 @@ var app = reqiure("../");
 var request = require("request");
 var assert = require("assert");
 
+// server setup
+
 it("Responds with 'Hello, World!'", function(done) {
     request("http://localhost:" + port + "/", function(response, body) {
         assert.equal(response.statusCode, 200);
