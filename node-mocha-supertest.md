@@ -590,3 +590,23 @@ manager.validateLogin("foo", "1234"); // Should call hashing function
 
 assert(spyHash.called);
 ```
+
+---
+
+## Sinon Mocks
+
+## http://sinonjs.org/docs/#mocks
+
+---
+
+```javascript
+var dbConnection = new DBConnection("username", "password");
+var mockUsers = sinon.mock(dbConnection.users);
+mockUsers.expects("create").once().withArgs("foo", hash("1234"));
+
+var manager = new UserManager(dbConnection);
+manager.createUser("foo", "1234");
+
+mockUsers.verify();
+mockUsers.restore();
+```
