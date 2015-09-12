@@ -269,7 +269,7 @@ Supertest
 
 * Takes care of server setup and teardown
 * Simplifies request and response validation
-* Makes tests very easy to read
+* Makes tests easier to read
 
 ---
 
