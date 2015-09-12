@@ -39,7 +39,37 @@ Mocha
 
 * http://mochajs.org/
 * Simple syntax
-* Many test supported reporters
+* Many supported reporters
+
+---
+
+Test runners:
+
+`mocha --reporter dot`
+
+![](img/mocha-dot.gif)
+
+---
+
+Test runners:
+
+`mocha --reporter spec`
+
+![](img/mocha-spec.gif)
+
+---
+
+Test runners:
+
+`mocha --reporter nyan`
+
+![](img/mocha-nyan.gif)
+
+---
+
+Lots more options:
+
+![](img/mocha-reporters.png)
 
 ---
 
@@ -87,12 +117,82 @@ it('can do async work', function(done) {
 
 ---
 
-More advanced example:
+A note on async code:
 
 ```javascript
-var app = require("../");
+it('can do async work', function(done) {
+    setTimeout(done, 1000);
+});
+```
 
-describe("Advanced module", function() {
+---
+
+The `done` callback can handle errors
+
+```javascript
+it('can do async work', function(done) {
+    setTimeout(function() {
+        done(new Error("Oh noes!");
+    }, 1000);
+});
+```
+
+![](img/async-fail.png)
+
+---
+
+## Testing an API
+
+---
+
+```javascript
+var express = require("express");
+var app = express();
+
+app.get("/", function(req, res) {
+    res.send({ message: "Hello, World!" });
+});
+
+app.get("/foo", function(req, res) {
+    res.send({ message: "foo foo" });
+});
+
+app.listen(process.env.PORT || 3000);
+```
+
+---
+
+```javascript
+var assert = require("assert");
+var request = require("request");
+
+require("./server");
+
+describe("Server", function() {
+    it("responds with JSON message 'Hello, World!' at the root", function(done) {
+        request("http://localhost:3000", function(err, response, body) {
+            if (err) done(err);
+
+            var payload = JSON.parse(body);
+            assert.equal(payload.message, "Hello, World!");
+
+            done();
+        });
+    });
+});
+```
+
+---
+
+Small problem: port conflicts
+
+---
+
+```javascript
+var request = require("request");
+var app = require("./server");
+
+describe("API Server", function() {
     var server;
     var port;
     before(function(done) {
@@ -104,10 +204,18 @@ describe("Advanced module", function() {
         server.stop();
     });
     
-    // other tests here
-});
+    // ...
 ```
 
+---
+
+```javascript
+    it("responds 200 at the root url", function(done) {
+        request("http://localhost:" + port + "/", function(err, response, body) {
+            
+        });
+    });
+```
 ---
 
 Supertest
