@@ -94,20 +94,31 @@ describe("Some module", function() {
 
 ---
 
-Basic Mocha components:
+Basic Mocha API:
 
-`describe` - High level grouping (suite) of tests. You can nest `describe` inside another `describes`  
-`it` - A single test function. Usually tests one feature or edge case
+**`describe`**  
+High level grouping (suite) of tests. You can nest `describe` inside another `describes`  
+
+**`it`**  
+A single test function. Usually tests one feature or edge case
 
 ---
 
-Advanced Mocha components:
+Advanced Mocha hooks:
 
-`before` - Run once before all tests in a test suite  
-`after` - Run once after all tests in a test suite
+**`before`**  
+Run once before all tests in a test suite  
+**`after`**  
+Run once after all tests in a test suite  
 
-`beforeEach` - Run before every test in a test suite  
-`afterEach` - Run after every test in a test suite
+---
+
+Advanced Mocha hooks:
+
+**`beforeEach`**  
+Run before every test in a test suite  
+**`afterEach`**  
+Run after every test in a test suite
 
 ---
 
