@@ -39,8 +39,7 @@ http://willi.am/node-mocha-supertest
 
 ---
 
-Mocha
-===
+## Mocha
 
 * http://mochajs.org/
 * Simple syntax
