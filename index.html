@@ -798,7 +798,7 @@ UserManager.prototype.createUser = <span class="keyword">function</span>(usernam
 <pre><code class="lang-javascript"><span class="keyword">var</span> UserManager = require(<span class="string">"./user-manager"</span>);
 
 describe(<span class="string">"UserManager"</span>, <span class="keyword">function</span>() {
-    it(<span class="string">"hashes passwords"</span>, <span class="keyword">function</span>() {
+    it(<span class="string">"hashes passwords when creating users"</span>, <span class="keyword">function</span>() {
         <span class="keyword">var</span> fakeDbConnection = {
             users: {
                 create: <span class="keyword">function</span>(username, password) {
@@ -851,7 +851,11 @@ app.use(messages); <span class="comment">// No authentication</span>
 </section>
   </div>
   <div class="slide hidden -" id="slide-43">
-    <section class="slide-content"><h1 id="sinon-js">Sinon.JS</h1>
+    <section class="slide-content"><h2 id="sinon-js">Sinon.JS</h2>
+<p style="text-align: center">
+<a href="http://sinonjs.org/">http://sinonjs.org/</a>
+</p>
+
 <ul>
 <li>Stubs</li>
 <li>Spies</li>
