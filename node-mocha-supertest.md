@@ -96,8 +96,10 @@ describe("Some module", function() {
 
 Basic Mocha components:
 
-`describe` - High level grouping (suite) of tests  
+`describe` - High level grouping (suite) of tests. You can nest `describe` inside another `describes`  
 `it` - A single test function. Usually tests one feature or edge case
+
+---
 
 Advanced Mocha components:
 
