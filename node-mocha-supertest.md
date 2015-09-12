@@ -48,7 +48,7 @@ Mocha
 
 ---
 
-Test runners:
+Test reporters:
 
 `mocha --reporter dot`
 
@@ -56,7 +56,7 @@ Test runners:
 
 ---
 
-Test runners:
+Test reporters:
 
 `mocha --reporter spec`
 
@@ -64,7 +64,7 @@ Test runners:
 
 ---
 
-Test runners:
+Test reporters:
 
 `mocha --reporter nyan`
 
