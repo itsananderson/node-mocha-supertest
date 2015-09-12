@@ -2,6 +2,7 @@ title: Testing Node APIs With Mocha and SuperTest
 author:
     email: will@itsananderson.com
     name: Will Anderson
+    url: http://willi.am/node-mocha-supertest
     twitter: itsananderson
     github: itsananderson
 output: output/index.html
@@ -11,7 +12,7 @@ controls: true
 
 Will Anderson  
 will@itsananderson.com  
-http://willi.am/  
+http://willi.am/node-mocha-supertest  
 https://github.com/itsananderson  
 https://twitter.com/itsananderson  
 
@@ -86,7 +87,7 @@ describe("Some module", function() {
 });
 ```
 
-![](http://itsananderson.blob.core.windows.net/post-images/simple-mocha-test.png)
+![](img/simple-mocha-test.png)
 
 ---
 
