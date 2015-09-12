@@ -184,6 +184,94 @@ it('can do async work', function(done) {
 
 ---
 
+## Assertions
+
+---
+
+Native assert library:
+
+https://nodejs.org/api/assert.html
+
+* `assert(value, message)`, `assert.ok(value, message)`
+* `assert.fail(actual, expected, operator)`
+* `assert.equal(actual, expected, message)`
+* `assert.notEqual(actual, expected, message)`
+* `assert.throws(func[, value][, message])`
+* more.. see docs
+
+---
+
+## Chai
+
+* Should vs. Expect (I recommend Expect)
+* Write assertions in (almost) English
+
+---
+
+Chai.should
+
+```javascript
+var should = require("chai").should();
+var foo = "bar";
+
+foo.should.be.a("string");
+foo.should.equal("bar");
+foo.should.have.length(3);
+```
+
+Sometimes `.should` does not work
+
+---
+
+Chai.expect
+
+```javascript
+var expect = require("chai").expect;
+
+var foo = "bar";
+
+expect(foo).to.be.a("string");
+expect(foo).to.equal("bar");
+expect(foo).to.have.length(3);
+```
+
+---
+
+Chai.expect - Improving output:
+
+```javascript
+var answer = 43;
+
+// AssertionError: expected 43 to equal 42.
+expect(answer).to.equal(42); 
+
+// AssertionError: topic [answer]: expected 43 to equal 42.
+expect(answer, 'topic [answer]').to.equal(42);
+```
+
+---
+
+## Chai as Promised
+
+https://github.com/domenic/chai-as-promised
+
+```javascript
+var chai = require("chai");
+var chaiAsPromised = require("chai-as-promised");
+chai.use(chaiAsPromised);
+var expect = chai.expect;
+
+var p = new Promise(function(resolve, reject) {
+  resolve("foo");
+});
+
+it("resolves a promise", function() {
+  return expect(somePromise).to.eventually.equal("foo");
+});
+```
+
+---
+
 ## Testing an API
 
 ---
