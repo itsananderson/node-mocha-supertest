@@ -145,6 +145,8 @@ it('can do async work', function(done) {
 
 ---
 
+Simple API server:
+
 ```javascript
 var express = require("express");
 var app = express();
@@ -161,6 +163,8 @@ app.listen(process.env.PORT || 3000);
 ```
 
 ---
+
+Simple test:
 
 ```javascript
 var assert = require("assert");
@@ -186,7 +190,58 @@ describe("Server", function() {
 
 Small problem: port conflicts
 
+```javascript
+        request("http://localhost:3000", function(err, response, body) {
+```
 ---
+
+New server:
+
+```javascript
+var express = require("express");
+var app = express();
+
+app.get("/", function(req, res) {
+    res.send({ message: "Hello, World!" });
+});
+
+app.get("/foo", function(req, res) {
+    res.send({ message: "foo foo" });
+});
+
+module.exports = app;
+```
+
+---
+
+New tests:
+
+```javascript
+var assert = require("assert");
+var request = require("request");
+
+var app = require("./server");
+
+var server = app.listen(0);
+var port = server.address().port;
+
+describe("Server", function() {
+    it("responds with JSON message 'Hello, World!' at the root", function(done) {
+        request("http://localhost:" + port + "/", function(err, response, body) {
+            if (err) done(err);
+
+            var payload = JSON.parse(body);
+            assert.equal(payload.message, "Hello, World!");
+
+            done();
+        });
+    });
+});
+```
+
+---
+
+Isolating server for each test:
 
 ```javascript
 var request = require("request");
@@ -195,27 +250,18 @@ var app = require("./server");
 describe("API Server", function() {
     var server;
     var port;
-    before(function(done) {
+    beforeEach(function(done) {
         server = app.listen(0, done);
         port = server.address.port();
     });
     
-    after(function() {
+    afterEach(function() {
         server.stop();
     });
     
     // ...
 ```
 
----
-
-```javascript
-    it("responds 200 at the root url", function(done) {
-        request("http://localhost:" + port + "/", function(err, response, body) {
-            
-        });
-    });
-```
 ---
 
 Supertest
