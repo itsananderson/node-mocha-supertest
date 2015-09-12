@@ -560,8 +560,7 @@ var supertest = require("supertest")(app);
 
 ---
 
-Sinon.JS
-===
+## Sinon.JS
 
 * Stubs
 * Spies
