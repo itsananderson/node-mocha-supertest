@@ -630,7 +630,7 @@ mockUsers.restore();
 
 ---
 
-## Bonus Tip
+## Bonus Tips
 
 ---
 
@@ -667,3 +667,22 @@ describe.only("Foo", function() {
     it("test2", function() {});
 });
 ```
+
+---
+
+Custom timeout:
+
+```javascript
+describe("Foo", function() {
+    it("long test", function(done) {
+        this.timeout(10000);
+        // do slow async things
+        done();
+    });
+});
+
+---
+
+Watch for changes and re-run tests:
+
+`mocha --watch`
