@@ -562,6 +562,10 @@ var supertest = require("supertest")(app);
 
 ## Sinon.JS
 
+<p style="text-align: center">
+http://sinonjs.org/
+</p>
+
 * Stubs
 * Spies
 * Mocks
