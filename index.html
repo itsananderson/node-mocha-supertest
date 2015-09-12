@@ -938,14 +938,13 @@ mockUsers.restore();</code></pre>
   </div>
   <div class="slide hidden -" id="slide-55">
     <section class="slide-content"><p>Custom timeout:</p>
-<p>```javascript
-describe(&quot;Foo&quot;, function() {
-    it(&quot;long test&quot;, function(done) {
-        this.timeout(10000);
-        // do slow async things
+<pre><code class="lang-javascript">describe(<span class="string">"Foo"</span>, <span class="keyword">function</span>() {
+    it(<span class="string">"long test"</span>, <span class="keyword">function</span>(done) {
+        <span class="keyword">this</span>.timeout(<span class="number">10000</span>);
+        <span class="comment">// do slow async things</span>
         done();
     });
-});</p>
+});</code></pre>
 </section>
   </div>
   <div class="slide hidden -" id="slide-56">
