@@ -264,8 +264,7 @@ describe("API Server", function() {
 
 ---
 
-Supertest
-===
+## Supertest
 
 * Takes care of server setup and teardown
 * Simplifies request and response validation
@@ -402,12 +401,21 @@ supertest
 
 ---
 
-Inversion of Control
-===
+Other challenges:
 
+* Database is slow, unavailable in testing environment (e.g. Travis CI)
+* External resources are sometimes unpredictable
+* Hard to test edge cases
+
+---
+
+## Inversion of Control
+
+* https://en.wikipedia.org/wiki/Inversion_of_control
 * Components don't construct their own dependencies
 * Decouples your application
 * Drastically simplifies testing
+* Related: Dependency Injection
 
 ---
 
@@ -416,12 +424,10 @@ Before IoC:
 ```javascript
 function UserManager() {
     this.db = new DBConnection("username", "password");
-    this.hasher = PasswordHashers.SHA256;
 }
 
-UserManager.prototype.validateLogin = function(username, password) {
-    var user = this.db.users.findByUsername(username);
-    return user && user.password === this.hasher(password);
+UserManager.prototype.createUser = function(username, password) {
+    var user = this.db.users.create(username, hash(password));
 };
 
 // ...
@@ -432,10 +438,13 @@ UserManager.prototype.validateLogin = function(username, password) {
 After IoC:
 
 ```javascript
-function UserManager(dbConnection, hasher) {
+function UserManager(dbConnection) {
     this.db = dbConnection;
-    this.hasher = hasher;
 }
+
+UserManager.prototype.createUser = function(username, password) {
+    var user = this.db.users.create(username, hash(password));
+};
 
 // ...
 ```
@@ -445,28 +454,19 @@ function UserManager(dbConnection, hasher) {
 Testing a component with IoC:
 
 ```javascript
-var UserManager = require("../user-manager");
-
-function fakeHasher(input) {
-    return output + "5";
-}
-
-var fakeDbConnection = {
-    users: {
-        findByUsername: function() {
-            {
-                username: "foo",
-                password: fakeHasher("1234")
-            }
-        }
-    }
-};
-
-var manager = new UserManager(fakeDbConnection, fakeHasher);
+var UserManager = require("./user-manager");
 
 describe("UserManager", function() {
-    it("validates a username and password", function() {
-        assert(manager.validateLogin("foo", "1234"));
+    it("hashes passwords", function() {
+        var fakeDbConnection = {
+            users: {
+                create: function(username, password) {
+                    assert.equal(password, hash("1234"));
+                }
+            }
+        };
+        var manager = new UserManager(fakeDbConnection);
+        manager.createUser("foo", "1234");
     });
 });
 ```
@@ -499,6 +499,7 @@ Testing Express middleware:
 var app = require("express")();
 var messages = require("../routes/messages");
 
+// Stub out a fake user
 app.use(function(req, res, next) {
     req.user = {
         id: 1
