@@ -15,13 +15,9 @@ controls: true
 <p style="text-align: center">
 Will Anderson  
 will@itsananderson.com  
+http://willi.am/  
 https://github.com/itsananderson  
 https://twitter.com/itsananderson  
-</p>
-
-<p style="text-align: center">
-These slides:  
-http://willi.am/node-mocha-supertest  
 </p>
 
 ---
