@@ -500,7 +500,7 @@ Testing a component with IoC:
 var UserManager = require("./user-manager");
 
 describe("UserManager", function() {
-    it("hashes passwords", function() {
+    it("hashes passwords when creating users", function() {
         var fakeDbConnection = {
             users: {
                 create: function(username, password) {
