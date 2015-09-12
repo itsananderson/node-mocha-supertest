@@ -610,3 +610,43 @@ manager.createUser("foo", "1234");
 mockUsers.verify();
 mockUsers.restore();
 ```
+
+---
+
+## Bonus Tip
+
+---
+
+Running a single Mocha test:
+
+```javascript
+describe("Foo", function() {
+    it("test1", function() {});
+    it("test2", function() {});
+    it("test2", function() {});
+});
+```
+
+---
+
+Running a single Mocha test:
+
+```javascript
+describe("Foo", function() {
+    it("test1", function() {});
+    it.only("test2", function() {});
+    it("test2", function() {});
+});
+```
+
+---
+
+Running a single Mocha test group:
+
+```javascript
+describe.only("Foo", function() {
+    it("test1", function() {});
+    it("test2", function() {});
+    it("test2", function() {});
+});
+```
